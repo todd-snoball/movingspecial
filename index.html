@@ -217,7 +217,7 @@ html, body {
 <!-- Scheduler card, centered underneath. Wide enough that iClosed renders its
      horizontal two-pane layout (form left, calendar right). On mobile it shrinks
      to the viewport and iClosed re-stacks to a single column on its own. -->
-<div id="sched-shell" style="max-width: 940px; width: 100%; margin: 36px auto 0 auto; position: relative;">
+<div id="sched-shell" style="max-width: 926px; width: 100%; margin: 36px auto 0 auto; position: relative;">
 <!-- Floating CTA callout (decorative annotation, not clickable, clicks pass through) pointing into the left side of the scheduler form -->
 <div aria-hidden="true" style="position: absolute; top: -22px; left: 8px; z-index: 10; pointer-events: none; display: flex; flex-direction: column; align-items: flex-start;">
 <div style="background: #8BD7DF; color: #121155; font-weight: 800; font-size: 16px; letter-spacing: 0.01em; padding: 10px 20px; border-radius: 999px; box-shadow: 0 8px 20px rgba(18, 17, 85, 0.32); transform: rotate(-4deg); white-space: nowrap;">Book Demo Here!</div>
@@ -394,7 +394,7 @@ html, body {
   var PREVIEW = location.search.indexOf('preview') !== -1;
   var started = false;
   var INIT_H = 500;     // initial/fallback embed height before the form reports its size
-  var MAX_W = 940;      // fallback width if iClosed reports height but not width
+  var MAX_W = 926;      // fixed: iClosed two-pane content is ~809px, two-pane only at >=900px
   var widgetEl = null;  // the .iclosed-widget div, once created
 
   // Build the iClosed data-url with tracking params pulled from the page URL.
@@ -466,14 +466,6 @@ html, body {
         var ifrH = widgetEl.querySelector('iframe');
         if (ifrH) ifrH.style.height = h + 'px';
       }
-    }
-
-    // Only follow a desktop two-pane width (>= 820). Narrower reports are the mobile
-    // single-column layout and should not clamp the box.
-    var w = parseWidth(e.data);
-    if (w && w >= 820 && w <= 1100) {
-      var shell = document.getElementById('sched-shell');
-      if (shell) shell.style.maxWidth = Math.ceil(w) + 'px';
     }
   }, false);
 
