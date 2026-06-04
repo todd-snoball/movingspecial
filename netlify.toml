@@ -1,0 +1,7 @@
+# Allow Netlify Image CDN to optimize images served from these remote domains.
+# Without this, the /.netlify/images?url=... requests for external images are blocked.
+[images]
+  remote_images = [
+    'https://images\.bestcompany\.com/.*',
+    'https://s3\.us-west-1\.amazonaws\.com/.*'
+  ]
