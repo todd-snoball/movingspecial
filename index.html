@@ -227,7 +227,7 @@ html, body {
 </svg>
 </div>
 <div id="book-a-demo" style="background: #FFFFFF; border-radius: 14px; padding: 8px; box-shadow: 0 24px 60px rgba(18, 17, 85, 0.45); border: 1px solid rgba(255, 255, 255, 0.06);">
-<div id="iclosed-embed" style="position: relative; border-radius: 10px; overflow: hidden; background: #FFFFFF; min-height: 500px;"><!-- The real iClosed iframe is injected here by JS, behind this facade. -->
+<div id="iclosed-embed" style="position: relative; border-radius: 10px; overflow: hidden; background: #FFFFFF; min-height: 620px;"><!-- The real iClosed iframe is injected here by JS, behind this facade. -->
 <!-- Facade: a non-typeable look-alike of the iClosed form so the swap is seamless.
      Two panes (form + calendar) to match iClosed's horizontal layout. -->
 <div id="iclosed-facade" role="button" tabindex="0" aria-label="Open the booking scheduler" style="position: absolute; inset: 0; z-index: 2; background: #FFFFFF; cursor: pointer; overflow: hidden; display: flex; flex-direction: column; transition: opacity 0.35s ease;">
@@ -389,83 +389,14 @@ html, body {
 <script>
 (function () {
   var EMBED = 'https://app.iclosed.io/e/snoball/snoball-moving-demo';
+  var WIDGET_JS = 'https://app.iclosed.io/assets/widget.js';
   // Add ?preview to the URL to freeze the placeholder (skips auto-load) for inspection.
   var PREVIEW = location.search.indexOf('preview') !== -1;
   var started = false;
 
-  // ---- Option A: auto-resize from iClosed height messages ----
-  // iClosed lives on app.iclosed.io, so we cannot measure the form from this page
-  // (cross-origin). IF iClosed broadcasts its height via postMessage, we grow the
-  // embed to match so the form never inner-scrolls. Purely additive: if no height
-  // message ever arrives, nothing changes and the min-height floor below still holds.
-  // Floor used ONLY for the loading facade and before the form first reports its
-  // size. Once the iframe has loaded, we hug the form's real height instead, so
-  // there is no empty space below short steps. (See the message handler below.)
-  var FACADE_FLOOR = 500; // keep in sync with #iclosed-embed min-height in the CSS
-  var hugReady = false;   // flips true once the iframe loads; gates shrink-to-fit
-
-  // Pull a plausible pixel height out of whatever shape iClosed sends.
-  // Confirmed format: { type: 'iclosed.widget_height', height: '930px' }.
-  // We stay tolerant: a raw number, a numeric/px string, a JSON string, or an
-  // object carrying a height field all resolve to a number.
-  function toNum(v) {
-    if (typeof v === 'number') return isFinite(v) ? v : null;
-    if (typeof v === 'string') {
-      var n = parseFloat(v); // parseFloat('930px') === 930
-      return isNaN(n) ? null : n;
-    }
-    return null;
-  }
-
-  function parseHeight(data) {
-    var obj = data;
-    if (typeof obj === 'number') return obj;
-    if (typeof obj === 'string') {
-      var s = obj.trim();
-      if (/^\d/.test(s)) return toNum(s); // bare "930" or "930px"
-      try { obj = JSON.parse(s); } catch (e) { return null; }
-    }
-    if (obj && typeof obj === 'object') {
-      var keys = ['height', 'scrollHeight', 'offsetHeight', 'docHeight', 'iframeHeight', 'frameHeight'];
-      for (var i = 0; i < keys.length; i++) {
-        if (keys[i] in obj) {
-          var h = toNum(obj[keys[i]]);
-          if (h !== null) return h;
-        }
-      }
-    }
-    return null;
-  }
-
-  window.addEventListener('message', function (e) {
-    // Only trust messages from iClosed's domain.
-    var host;
-    try { host = new URL(e.origin).hostname; } catch (x) { return; }
-    if (host !== 'app.iclosed.io' && host !== 'iclosed.io' && !/\.iclosed\.io$/.test(host)) return;
-
-    // DIAGNOSTIC: log everything iClosed sends so we can confirm whether height is
-    // broadcast and in what shape. Safe to delete this console.log once verified.
-    try { console.log('[iClosed message]', e.data); } catch (x) {}
-
-    var h = parseHeight(e.data);
-    if (!h || h <= 200) return;
-    var box = document.getElementById('iclosed-embed');
-    if (!box) return;
-    h = Math.ceil(h);
-    if (hugReady) {
-      // Form is loaded: hug its exact height, growing or shrinking to fit.
-      box.style.minHeight = h + 'px';
-    } else {
-      // Facade still showing: only grow, never shrink, so the loading box does not
-      // flicker downward on early or transient values.
-      var cur = parseFloat(box.style.minHeight) || FACADE_FLOOR;
-      if (h > cur) box.style.minHeight = h + 'px';
-    }
-  }, false);
-
-  // Build the iClosed embed URL with tracking params pulled from the page URL.
-  // For each subid, use a directly-passed subid first, then fall back to the UTM.
-  // This way it works whether the ad URL carries subid1/2/3 or utm_source/medium/campaign.
+  // Build the iClosed data-url with tracking params pulled from the page URL.
+  // Each subid uses a directly-passed subid first, then falls back to the UTM, so it
+  // works whether the ad URL carries subid1/2/3 or utm_source/medium/campaign.
   function embedUrl() {
     var p = new URLSearchParams(location.search);
     var map = {
@@ -474,32 +405,55 @@ html, body {
       subid3: p.get('subid3') || p.get('utm_campaign')
     };
     var url = new URL(EMBED);
-    Object.keys(map).forEach(function (k) {
-      if (map[k]) url.searchParams.set(k, map[k]);
-    });
+    Object.keys(map).forEach(function (k) { if (map[k]) url.searchParams.set(k, map[k]); });
     return url.toString();
+  }
+
+  function fadeFacade() {
+    var facade = document.getElementById('iclosed-facade');
+    if (!facade) return;
+    facade.style.pointerEvents = 'none';
+    facade.style.opacity = '0';
+    setTimeout(function () { if (facade.parentNode) facade.parentNode.removeChild(facade); }, 450);
   }
 
   function load() {
     if (started) return;
     started = true;
     var box = document.getElementById('iclosed-embed');
-    var facade = document.getElementById('iclosed-facade');
     var bar = document.getElementById('iclosed-loadingbar');
     if (!box) return;
     if (bar) bar.style.opacity = '1';
-    var f = document.createElement('iframe');
-    f.title = 'Snoball Moving Demo';
-    f.src = embedUrl();
-    f.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;display:block;z-index:1;';
-    f.addEventListener('load', function () {
-      hugReady = true; // form is in: from here on we hug its exact reported height
-      if (!facade) return;
-      facade.style.pointerEvents = 'none';
-      facade.style.opacity = '0';
-      setTimeout(function () { if (facade.parentNode) facade.parentNode.removeChild(facade); }, 450);
-    });
-    box.insertBefore(f, box.firstChild);
+
+    // Use iClosed's official inline widget (widget.js + .iclosed-widget div) so the
+    // scheduler renders in its wide two-pane layout (form left, calendar right)
+    // instead of the tall stacked layout a raw iframe produces. The widget sits in
+    // normal flow inside the box; the facade overlays it until the iframe loads.
+    var w = document.createElement('div');
+    w.className = 'iclosed-widget';
+    w.setAttribute('data-url', embedUrl());
+    w.title = 'Snoball Demo';
+    w.style.cssText = 'width:100%;height:620px;display:block;position:relative;z-index:1;';
+    box.insertBefore(w, box.firstChild);
+
+    var s = document.createElement('script');
+    s.src = WIDGET_JS;
+    s.async = true;
+    document.body.appendChild(s);
+
+    // Fade the facade once iClosed has injected and loaded its iframe.
+    var tries = 0;
+    var iv = setInterval(function () {
+      var ifr = w.querySelector('iframe');
+      if (ifr) {
+        clearInterval(iv);
+        ifr.addEventListener('load', fadeFacade);
+        setTimeout(fadeFacade, 1800);
+      } else if (++tries > 60) {
+        clearInterval(iv);
+        fadeFacade();
+      }
+    }, 100);
   }
 
   var facade = document.getElementById('iclosed-facade');
@@ -513,16 +467,12 @@ html, body {
   var ctas = document.querySelectorAll('a[href="#book-a-demo"]');
   for (var i = 0; i < ctas.length; i++) { ctas[i].addEventListener('click', load); }
 
-  // Load on the first real interaction: scroll, tap, mouse move, key, or wheel.
-  // Performance tools (Lighthouse/PageSpeed) never interact with the page, so the
-  // heavy third-party scheduler stays out of the test. Real visitors trigger it the
-  // instant they engage, so the calendar is ready before they reach it. No extra click.
+  // Load on the first real interaction so the heavy third-party scheduler stays out
+  // of Lighthouse/PageSpeed (which never interact) but is ready for real visitors.
   if (!PREVIEW) {
     var triggers = ['pointerdown', 'touchstart', 'mousemove', 'scroll', 'keydown', 'wheel'];
     function onFirstInteraction() {
-      for (var j = 0; j < triggers.length; j++) {
-        window.removeEventListener(triggers[j], onFirstInteraction);
-      }
+      for (var j = 0; j < triggers.length; j++) window.removeEventListener(triggers[j], onFirstInteraction);
       load();
     }
     for (var k = 0; k < triggers.length; k++) {
