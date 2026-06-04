@@ -227,7 +227,7 @@ html, body {
 </svg>
 </div>
 <div id="book-a-demo" style="background: #FFFFFF; border-radius: 14px; padding: 8px; box-shadow: 0 24px 60px rgba(18, 17, 85, 0.45); border: 1px solid rgba(255, 255, 255, 0.06);">
-<div id="iclosed-embed" style="position: relative; border-radius: 10px; overflow: hidden; background: #FFFFFF; min-height: 620px;"><!-- The real iClosed iframe is injected here by JS, behind this facade. -->
+<div id="iclosed-embed" style="position: relative; border-radius: 10px; overflow: hidden; background: #FFFFFF; min-height: 500px;"><!-- The real iClosed iframe is injected here by JS, behind this facade. -->
 <!-- Facade: a non-typeable look-alike of the iClosed form so the swap is seamless.
      Two panes (form + calendar) to match iClosed's horizontal layout. -->
 <div id="iclosed-facade" role="button" tabindex="0" aria-label="Open the booking scheduler" style="position: absolute; inset: 0; z-index: 2; background: #FFFFFF; cursor: pointer; overflow: hidden; display: flex; flex-direction: column; transition: opacity 0.35s ease;">
@@ -393,6 +393,8 @@ html, body {
   // Add ?preview to the URL to freeze the placeholder (skips auto-load) for inspection.
   var PREVIEW = location.search.indexOf('preview') !== -1;
   var started = false;
+  var INIT_H = 500;     // initial/fallback embed height before the form reports its size
+  var widgetEl = null;  // the .iclosed-widget div, once created
 
   // Build the iClosed data-url with tracking params pulled from the page URL.
   // Each subid uses a directly-passed subid first, then falls back to the UTM, so it
@@ -408,6 +410,49 @@ html, body {
     Object.keys(map).forEach(function (k) { if (map[k]) url.searchParams.set(k, map[k]); });
     return url.toString();
   }
+
+  // Pull a pixel height out of whatever shape iClosed posts: a number, a numeric/px
+  // string, a JSON string, or an object carrying a height-like field.
+  function toNum(v) {
+    if (typeof v === 'number') return isFinite(v) ? v : null;
+    if (typeof v === 'string') { var n = parseFloat(v); return isNaN(n) ? null : n; }
+    return null;
+  }
+  function parseHeight(data) {
+    var obj = data;
+    if (typeof obj === 'number') return obj;
+    if (typeof obj === 'string') {
+      var t = obj.trim();
+      if (/^\d/.test(t)) return toNum(t);
+      try { obj = JSON.parse(t); } catch (e) { return null; }
+    }
+    if (obj && typeof obj === 'object') {
+      var keys = ['height', 'scrollHeight', 'offsetHeight', 'docHeight', 'iframeHeight', 'frameHeight'];
+      for (var i = 0; i < keys.length; i++) {
+        if (keys[i] in obj) { var h = toNum(obj[keys[i]]); if (h !== null) return h; }
+      }
+    }
+    return null;
+  }
+
+  // iClosed serves the form cross-origin, so we can't measure it directly. If it
+  // broadcasts its content height via postMessage, hug the box to that height so
+  // there is no empty space below the form, and it grows as later steps appear.
+  window.addEventListener('message', function (e) {
+    var host;
+    try { host = new URL(e.origin).hostname; } catch (x) { return; }
+    if (host !== 'app.iclosed.io' && host !== 'iclosed.io' && !/\.iclosed\.io$/.test(host)) return;
+    var h = parseHeight(e.data);
+    if (!h || h <= 200) return;
+    h = Math.ceil(h);
+    var box = document.getElementById('iclosed-embed');
+    if (box) box.style.minHeight = h + 'px';
+    if (widgetEl) {
+      widgetEl.style.height = h + 'px';
+      var ifr = widgetEl.querySelector('iframe');
+      if (ifr) ifr.style.height = h + 'px';
+    }
+  }, false);
 
   function fadeFacade() {
     var facade = document.getElementById('iclosed-facade');
@@ -425,16 +470,15 @@ html, body {
     if (!box) return;
     if (bar) bar.style.opacity = '1';
 
-    // Use iClosed's official inline widget (widget.js + .iclosed-widget div) so the
-    // scheduler renders in its wide two-pane layout (form left, calendar right)
-    // instead of the tall stacked layout a raw iframe produces. The widget sits in
-    // normal flow inside the box; the facade overlays it until the iframe loads.
-    var w = document.createElement('div');
-    w.className = 'iclosed-widget';
-    w.setAttribute('data-url', embedUrl());
-    w.title = 'Snoball Demo';
-    w.style.cssText = 'width:100%;height:620px;display:block;position:relative;z-index:1;';
-    box.insertBefore(w, box.firstChild);
+    // iClosed's official inline widget (widget.js + .iclosed-widget div) renders the
+    // wide two-pane layout. It keeps whatever height we give it, so the message
+    // handler above hugs the box to the form's real height once it reports in.
+    widgetEl = document.createElement('div');
+    widgetEl.className = 'iclosed-widget';
+    widgetEl.setAttribute('data-url', embedUrl());
+    widgetEl.title = 'Snoball Demo';
+    widgetEl.style.cssText = 'width:100%;height:' + INIT_H + 'px;display:block;position:relative;z-index:1;';
+    box.insertBefore(widgetEl, box.firstChild);
 
     var s = document.createElement('script');
     s.src = WIDGET_JS;
@@ -444,7 +488,7 @@ html, body {
     // Fade the facade once iClosed has injected and loaded its iframe.
     var tries = 0;
     var iv = setInterval(function () {
-      var ifr = w.querySelector('iframe');
+      var ifr = widgetEl.querySelector('iframe');
       if (ifr) {
         clearInterval(iv);
         ifr.addEventListener('load', fadeFacade);
