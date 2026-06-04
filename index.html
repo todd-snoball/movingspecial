@@ -217,7 +217,7 @@ html, body {
 <!-- Scheduler card, centered underneath. Wide enough that iClosed renders its
      horizontal two-pane layout (form left, calendar right). On mobile it shrinks
      to the viewport and iClosed re-stacks to a single column on its own. -->
-<div style="max-width: 980px; width: 100%; margin: 36px auto 0 auto; position: relative;">
+<div id="sched-shell" style="max-width: 980px; width: 100%; margin: 36px auto 0 auto; position: relative;">
 <!-- Floating CTA callout (decorative annotation, not clickable, clicks pass through) pointing into the left side of the scheduler form -->
 <div aria-hidden="true" style="position: absolute; top: -22px; left: 8px; z-index: 10; pointer-events: none; display: flex; flex-direction: column; align-items: flex-start;">
 <div style="background: #8BD7DF; color: #121155; font-weight: 800; font-size: 16px; letter-spacing: 0.01em; padding: 10px 20px; border-radius: 999px; box-shadow: 0 8px 20px rgba(18, 17, 85, 0.32); transform: rotate(-4deg); white-space: nowrap;">Book Demo Here!</div>
@@ -394,6 +394,7 @@ html, body {
   var PREVIEW = location.search.indexOf('preview') !== -1;
   var started = false;
   var INIT_H = 500;     // initial/fallback embed height before the form reports its size
+  var MAX_W = 980;      // fallback width if iClosed reports height but not width
   var widgetEl = null;  // the .iclosed-widget div, once created
 
   // Build the iClosed data-url with tracking params pulled from the page URL.
@@ -411,13 +412,12 @@ html, body {
     return url.toString();
   }
 
-  // Pull a pixel height out of whatever shape iClosed posts: a number, a numeric/px
-  // string, a JSON string, or an object carrying a height-like field.
   function toNum(v) {
     if (typeof v === 'number') return isFinite(v) ? v : null;
     if (typeof v === 'string') { var n = parseFloat(v); return isNaN(n) ? null : n; }
     return null;
   }
+  // Height can arrive as a bare number/px string or inside an object.
   function parseHeight(data) {
     var obj = data;
     if (typeof obj === 'number') return obj;
@@ -434,23 +434,46 @@ html, body {
     }
     return null;
   }
+  // Width is only read from explicit width-like keys on an object, so a bare
+  // height number is never mistaken for a width.
+  function parseWidth(data) {
+    var obj = data;
+    if (typeof obj === 'string') { try { obj = JSON.parse(obj.trim()); } catch (e) { return null; } }
+    if (obj && typeof obj === 'object') {
+      var keys = ['width', 'scrollWidth', 'offsetWidth', 'contentWidth', 'docWidth', 'iframeWidth', 'frameWidth'];
+      for (var i = 0; i < keys.length; i++) {
+        if (keys[i] in obj) { var w = toNum(obj[keys[i]]); if (w !== null) return w; }
+      }
+    }
+    return null;
+  }
 
-  // iClosed serves the form cross-origin, so we can't measure it directly. If it
-  // broadcasts its content height via postMessage, hug the box to that height so
-  // there is no empty space below the form, and it grows as later steps appear.
+  // iClosed serves the form cross-origin, so we can't measure it directly. We hug
+  // the box to whatever size iClosed broadcasts: height always, and width too if it
+  // reports one (so the box follows the form instead of sitting at a fixed width).
   window.addEventListener('message', function (e) {
     var host;
     try { host = new URL(e.origin).hostname; } catch (x) { return; }
     if (host !== 'app.iclosed.io' && host !== 'iclosed.io' && !/\.iclosed\.io$/.test(host)) return;
+
     var h = parseHeight(e.data);
-    if (!h || h <= 200) return;
-    h = Math.ceil(h);
-    var box = document.getElementById('iclosed-embed');
-    if (box) box.style.minHeight = h + 'px';
-    if (widgetEl) {
-      widgetEl.style.height = h + 'px';
-      var ifr = widgetEl.querySelector('iframe');
-      if (ifr) ifr.style.height = h + 'px';
+    if (h && h > 200) {
+      h = Math.ceil(h);
+      var box = document.getElementById('iclosed-embed');
+      if (box) box.style.minHeight = h + 'px';
+      if (widgetEl) {
+        widgetEl.style.height = h + 'px';
+        var ifrH = widgetEl.querySelector('iframe');
+        if (ifrH) ifrH.style.height = h + 'px';
+      }
+    }
+
+    // Only follow a desktop two-pane width (>= 820). Narrower reports are the mobile
+    // single-column layout and should not clamp the box.
+    var w = parseWidth(e.data);
+    if (w && w >= 820 && w <= 1100) {
+      var shell = document.getElementById('sched-shell');
+      if (shell) shell.style.maxWidth = Math.ceil(w) + 'px';
     }
   }, false);
 
@@ -471,8 +494,8 @@ html, body {
     if (bar) bar.style.opacity = '1';
 
     // iClosed's official inline widget (widget.js + .iclosed-widget div) renders the
-    // wide two-pane layout. It keeps whatever height we give it, so the message
-    // handler above hugs the box to the form's real height once it reports in.
+    // wide two-pane layout. It keeps whatever size we give it, so the message handler
+    // above hugs the box to the form's real height (and width, if reported).
     widgetEl = document.createElement('div');
     widgetEl.className = 'iclosed-widget';
     widgetEl.setAttribute('data-url', embedUrl());
