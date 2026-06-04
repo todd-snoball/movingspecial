@@ -8,29 +8,46 @@
   <link rel="preconnect" href="https://images.bestcompany.com">
   <link rel="preconnect" href="https://s3.us-west-1.amazonaws.com">
   <link rel="preconnect" href="https://app.iclosed.io">
-  <!-- Self-hosted Inter (variable). Files live in /fonts next to index.html -->
-  <link rel="preload" as="font" type="font/woff2" href="fonts/InterVariable.woff2" crossorigin>
+  <!-- Self-hosted Lato (brand font). Files live in /fonts next to index.html. -->
+  <link rel="preload" as="font" type="font/woff2" href="fonts/Lato-Black.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="fonts/Lato-Regular.woff2" crossorigin>
   <style>
 /* ====================================================================
    Snoball Movers — 6-Day Guarantee Promo Landing Page — Custom Styles
    ==================================================================== */
 
-/* Self-hosted Inter variable font (replaces the render-blocking Google
-   Fonts request). Place InterVariable.woff2 and InterVariable-Italic.woff2
-   in a /fonts folder next to index.html. Filenames are case-sensitive. */
+/* Self-hosted Lato (brand font). No Google Fonts, so it stays off the render path.
+   Files in /fonts (case-sensitive): Lato-Regular.woff2, Lato-Bold.woff2,
+   Lato-Black.woff2, Lato-Italic.woff2. Lato only ships 400 / 700 / 900, so the
+   weight ranges below remap the page's existing weights to the nearest real Lato cut:
+   100-500 -> Regular, 600-700 -> Bold, 800-900 -> Black. */
 @font-face {
-  font-family: 'Inter';
+  font-family: 'Lato';
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 100 500;
   font-display: swap;
-  src: url('fonts/InterVariable.woff2') format('woff2');
+  src: url('fonts/Lato-Regular.woff2') format('woff2');
 }
 @font-face {
-  font-family: 'Inter';
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 600 700;
+  font-display: swap;
+  src: url('fonts/Lato-Bold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 800 900;
+  font-display: swap;
+  src: url('fonts/Lato-Black.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Lato';
   font-style: italic;
   font-weight: 100 900;
   font-display: swap;
-  src: url('fonts/InterVariable-Italic.woff2') format('woff2');
+  src: url('fonts/Lato-Italic.woff2') format('woff2');
 }
 
 html, body {
@@ -185,7 +202,7 @@ html, body {
 <!-- =====================================================================
      Snoball — Movers 6-Day Guarantee promo landing page
      ===================================================================== -->
-<div class="snoball-mc-landing" style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #272b30; line-height: 1.55; -webkit-font-smoothing: antialiased; width: 100%; margin: 0; padding: 0;">
+<div class="snoball-mc-landing" style="font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #272b30; line-height: 1.55; -webkit-font-smoothing: antialiased; width: 100%; margin: 0; padding: 0;">
 
 <!-- ============== STICKY TOP BAR (frosted glass) ============== -->
 <div style="background: rgba(18, 17, 85, 0.92); color: #ffffff; padding: 13px 24px; position: sticky; top: 0; z-index: 50; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
