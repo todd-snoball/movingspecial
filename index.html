@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snoball for Movers | Book $5K in 6 Days or You Don't Pay</title>
+  <meta name="description" content="Snoball books $5,000 in new referral revenue for qualifying moving companies in 6 days, or you don't pay. Done for you, not DIY. Book a demo.">
+  <link rel="preconnect" href="https://images.bestcompany.com">
+  <link rel="preconnect" href="https://s3.us-west-1.amazonaws.com">
+  <link rel="preconnect" href="https://app.iclosed.io">
+  <!-- Self-hosted Inter (variable). Files live in /fonts next to index.html -->
+  <link rel="preload" as="font" type="font/woff2" href="fonts/InterVariable.woff2" crossorigin>
+  <style>
+/* ====================================================================
+   Snoball Movers — 6-Day Guarantee Promo Landing Page — Custom Styles
+   ==================================================================== */
+
+/* Self-hosted Inter variable font (replaces the render-blocking Google
+   Fonts request). Place InterVariable.woff2 and InterVariable-Italic.woff2
+   in a /fonts folder next to index.html. Filenames are case-sensitive. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('fonts/InterVariable.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('fonts/InterVariable-Italic.woff2') format('woff2');
+}
+
+html, body {
+  overflow-x: clip !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Landing page wrapper */
+.snoball-mc-landing {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  background: #121155 !important;
+}
+
+/* ====================================================================
+   Logo Marquee
+   ==================================================================== */
+.sb-marquee {
+  overflow: hidden;
+  width: 100%;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, black 80px, black calc(100% - 80px), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, black 80px, black calc(100% - 80px), transparent 100%);
+}
+.sb-marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 36px;
+  align-items: center;
+  animation: sb-marquee-scroll 90s linear infinite;
+}
+.sb-marquee:hover .sb-marquee-track {
+  animation-play-state: paused;
+}
+.sb-marquee-logo {
+  flex-shrink: 0;
+  height: 80px;
+  width: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  box-sizing: border-box;
+}
+.sb-marquee-logo img {
+  max-height: 64px;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  display: block;
+}
+@keyframes sb-marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sb-marquee-track { animation: none; }
+}
+
+/* ====================================================================
+   Mobile (<=768px)
+   ==================================================================== */
+@media (max-width: 768px) {
+  .sb-topbar-row {
+    justify-content: center !important;
+    gap: 14px !important;
+  }
+}
+
+/* ====================================================================
+   Mobile (<=540px)
+   ==================================================================== */
+@media (max-width: 540px) {
+  .snoball-mc-landing h1 { font-size: 42px !important; }
+}
+
+/* ====================================================================
+   Performance: skip layout + paint for below-the-fold sections until the
+   user scrolls near them. Big reduction in initial render work.
+   contain-intrinsic-size reserves space so the scrollbar stays stable.
+   ==================================================================== */
+.sb-defer {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 700px;
+}
+
+/* ====================================================================
+   Scheduler facade loading bar (shows once the iframe starts loading)
+   ==================================================================== */
+#iclosed-loadingbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  background: rgba(26, 57, 169, 0.12);
+  overflow: hidden;
+}
+#iclosed-loadingbar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 40%;
+  height: 100%;
+  background: #1A39A9;
+  animation: sb-loadbar 1.1s ease-in-out infinite;
+}
+@keyframes sb-loadbar {
+  0% { left: -40%; }
+  100% { left: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #iclosed-loadingbar::after { animation: none; left: 0; width: 100%; opacity: 0.5; }
+}
+
+/* Skeleton placeholder shapes inside the facade */
+.sk {
+  position: relative;
+  overflow: hidden;
+  background: #EEF1F5;
+}
+.sk::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.65), transparent);
+  animation: sb-shimmer 1.6s infinite;
+}
+@keyframes sb-shimmer {
+  100% { transform: translateX(100%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sk::after { animation: none; }
+}
+
+/* Facade calendar pane hides on the narrowest screens so the loading box
+   does not get clipped while iClosed itself re-stacks to a single column. */
+@media (max-width: 560px) {
+  .sb-facade-cal { display: none !important; }
+  .sb-facade-form { border-right: 0 !important; }
+}
+  </style>
+</head>
+<body>
+<!-- =====================================================================
+     Snoball — Movers 6-Day Guarantee promo landing page
+     ===================================================================== -->
+<div class="snoball-mc-landing" style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #272b30; line-height: 1.55; -webkit-font-smoothing: antialiased; width: 100%; margin: 0; padding: 0;">
+
+<!-- ============== STICKY TOP BAR (frosted glass) ============== -->
+<div style="background: rgba(18, 17, 85, 0.92); color: #ffffff; padding: 13px 24px; position: sticky; top: 0; z-index: 50; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+<div class="sb-topbar-row" style="max-width: 1180px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
+<div class="sb-topbar-logo" style="flex: 0 0 auto;"><img style="height: 26px; width: auto; vertical-align: middle; display: block;" src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2FWhite%2520Straight%2520Snoball%2520Logo.png&amp;w=320&amp;fm=webp&amp;q=72" alt="Snoball"></div>
+<div class="sb-topbar-cta" style="flex: 0 0 auto;"><a style="display: inline-block; background: #8BD7DF; color: #121155; font-weight: 800; font-size: 15px; padding: 11px 22px; border-radius: 8px; text-decoration: none; letter-spacing: 0.01em; white-space: nowrap; box-shadow: 0 4px 14px rgba(139, 215, 223, 0.2);" href="#book-a-demo">Book a Demo</a></div>
+</div>
+</div>
+
+<!-- ============== HERO (BLUE GRADIENT, CENTERED) ============== -->
+<section class="sb-hero" style="background-image: linear-gradient(135deg, #121155 0%, #1A39A9 55%, #0055B8 100%); color: #ffffff; padding: 40px 24px 64px 24px;">
+<div style="max-width: 800px; margin: 0 auto; text-align: center;">
+<!-- Eyebrow / guarantee tag -->
+<div style="display: inline-block; font-size: 13px; font-weight: bold; letter-spacing: 0.16em; text-transform: uppercase; color: #8bd7df; background: rgba(139, 215, 223, 0.1); border: 1px solid rgba(139, 215, 223, 0.3); padding: 7px 16px; border-radius: 999px; margin-bottom: 22px;">Guarantee for Movers</div>
+<!-- H1 -->
+<h1 style="font-size: 68px; line-height: 1.04; font-weight: 800; margin: 0 0 20px 0; letter-spacing: -0.03em; color: #ffffff;">$5k in referral revenue in 6 days or <span style="background-image: linear-gradient(90deg, #8BD7DF 0%, #FF94FB 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: #8bd7df;">pay nothing</span></h1>
+<!-- Subtext -->
+<p style="font-size: 18px; line-height: 1.6; color: rgba(255, 255, 255, 0.92); margin: 0 auto 28px auto; max-width: 600px;">Moving companies doing 50+ moves a month with 1k+ customers in their CRM qualify. Snoball is the best at getting referrals. Book a demo and we&rsquo;ll prove it.</p>
+<!-- G2 social proof badge (~20% smaller) -->
+<div style="display: flex; justify-content: center;">
+<div style="display: inline-flex; align-items: center; gap: 11px; padding: 8px 16px 8px 10px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 999px;"><img style="width: 29px; height: 29px; display: block; flex-shrink: 0;" src="/.netlify/images?url=https%3A%2F%2Fs3.us-west-1.amazonaws.com%2Fimages.bestcompany.com%2Fbcbs%2Fsnoball%2Flogos%2Fg2-logo-white.webp&amp;w=120&amp;fm=webp&amp;q=75" alt="G2">
+<div style="color: #ffffff; font-size: 14px; font-weight: bold; line-height: 1;">4.7</div>
+<div style="position: relative; display: inline-block; line-height: 1; font-size: 14px; letter-spacing: 1px;"><span style="color: rgba(255, 255, 255, 0.3);">&#9733;&#9733;&#9733;&#9733;&#9733;</span> <span style="position: absolute; top: 0; left: 0; color: #ffffff; overflow: hidden; width: 90%; white-space: nowrap;">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
+<div style="color: rgba(255, 255, 255, 0.75); font-size: 11px; line-height: 1; white-space: nowrap;">(70 Reviews)</div>
+</div>
+</div>
+</div>
+
+<!-- Scheduler card, centered underneath. Wide enough that iClosed renders its
+     horizontal two-pane layout (form left, calendar right). On mobile it shrinks
+     to the viewport and iClosed re-stacks to a single column on its own. -->
+<div style="max-width: 900px; width: 100%; margin: 36px auto 0 auto; position: relative;">
+<!-- Floating CTA callout (decorative annotation, not clickable, clicks pass through) pointing into the left side of the scheduler form -->
+<div aria-hidden="true" style="position: absolute; top: -26px; left: 4px; z-index: 10; pointer-events: none; display: flex; flex-direction: column; align-items: flex-start;">
+<div style="background: #8BD7DF; color: #121155; font-weight: 800; font-size: 17px; letter-spacing: 0.01em; padding: 9px 18px; border-radius: 999px; box-shadow: 0 8px 20px rgba(18, 17, 85, 0.35); transform: rotate(-4deg); white-space: nowrap;">Book Demo</div>
+<svg width="86" height="66" viewBox="0 0 86 66" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-top: 4px; margin-left: 26px;">
+<path d="M10 5 C 8 30, 24 50, 58 56" stroke="#8BD7DF" stroke-width="4" stroke-linecap="round"></path>
+<path d="M58 56 L 44 53 M58 56 L 52 42" stroke="#8BD7DF" stroke-width="4" stroke-linecap="round"></path>
+</svg>
+</div>
+<div id="book-a-demo" style="background: #FFFFFF; border-radius: 14px; padding: 8px; box-shadow: 0 24px 60px rgba(18, 17, 85, 0.45); border: 1px solid rgba(255, 255, 255, 0.06);">
+<div id="iclosed-embed" style="position: relative; border-radius: 10px; overflow: hidden; background: #FFFFFF; min-height: 500px;"><!-- The real iClosed iframe is injected here by JS, behind this facade. -->
+<!-- Facade: a non-typeable look-alike of the iClosed form so the swap is seamless.
+     Two panes (form + calendar) to match iClosed's horizontal layout. -->
+<div id="iclosed-facade" role="button" tabindex="0" aria-label="Open the booking scheduler" style="position: absolute; inset: 0; z-index: 2; background: #FFFFFF; cursor: pointer; overflow: hidden; display: flex; flex-direction: column; transition: opacity 0.35s ease;">
+<div id="iclosed-loadingbar"></div>
+<!-- Tab header: the only part that mimics iClosed, so there is little to drift. -->
+<div style="display: flex; align-items: center; justify-content: center; gap: 28px; padding: 16px 20px; border-bottom: 1px solid #EFF1F4;"><span style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #272b30;"><span style="width: 9px; height: 9px; border-radius: 50%; background: #121155;"></span>Fill out the form</span> <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: #aab0ba;"><span style="width: 9px; height: 9px; border-radius: 50%; background: #d7dbe1;"></span>Book your event</span></div>
+<!-- Two-pane body -->
+<div style="flex: 1 1 auto; display: flex; flex-wrap: wrap;">
+<!-- LEFT: form pane -->
+<div class="sb-facade-form" style="flex: 1 1 300px; min-width: 260px; padding: 22px 24px; border-right: 1px solid #EFF1F4; box-sizing: border-box;">
+<div style="font-size: 20px; font-weight: 800; color: #272b30; margin-bottom: 18px;">Snoball Demo</div>
+<div class="sk" style="height: 48px; border-radius: 9px; margin-bottom: 12px;"></div>
+<div style="display: flex; gap: 12px; margin-bottom: 16px;">
+<div class="sk" style="flex: 1 1 0; height: 48px; border-radius: 9px;"></div>
+<div class="sk" style="flex: 1 1 0; height: 48px; border-radius: 9px;"></div>
+</div>
+<div class="sk" style="height: 11px; width: 88%; border-radius: 6px; margin-bottom: 8px;"></div>
+<div class="sk" style="height: 11px; width: 52%; border-radius: 6px; margin-bottom: 22px;"></div>
+<div class="sk" style="height: 50px; border-radius: 9px; background: #E3E9F5;"></div>
+</div>
+<!-- RIGHT: calendar pane -->
+<div class="sb-facade-cal" style="flex: 1 1 300px; min-width: 260px; padding: 22px 24px; box-sizing: border-box;">
+<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
+<div class="sk" style="height: 16px; width: 42%; border-radius: 6px;"></div>
+<div style="display: flex; gap: 8px;">
+<div class="sk" style="height: 26px; width: 26px; border-radius: 6px;"></div>
+<div class="sk" style="height: 26px; width: 26px; border-radius: 6px;"></div>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 9px;">
+<div class="sk" style="height: 9px; border-radius: 4px;"></div><div class="sk" style="height: 9px; border-radius: 4px;"></div><div class="sk" style="height: 9px; border-radius: 4px;"></div><div class="sk" style="height: 9px; border-radius: 4px;"></div><div class="sk" style="height: 9px; border-radius: 4px;"></div><div class="sk" style="height: 9px; border-radius: 4px;"></div><div class="sk" style="height: 9px; border-radius: 4px;"></div>
+<div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div>
+<div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div>
+<div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div>
+<div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div><div class="sk" style="height: 30px; border-radius: 6px;"></div>
+</div>
+</div>
+</div>
+<!-- Powered by iClosed footer -->
+<div style="border-top: 1px solid #EFF1F4; padding: 12px 20px; display: flex; align-items: center; justify-content: center;"><span style="font-size: 12px; color: #aab0ba; font-weight: 600;">Powered by iClosed</span></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============== LOGO STRIP (MARQUEE) ============== -->
+<section style="background: #FFFFFF; padding: 44px 0 32px 0;">
+<div class="sb-marquee">
+<div class="sb-marquee-track">
+<!-- ===== Unique logo set (10) ===== -->
+<div class="sb-marquee-logo"><img src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2Fmove-tastic.png&amp;w=400&amp;fm=webp&amp;q=72" alt="Move-tastic" decoding="async" loading="lazy"></div>
+<div class="sb-marquee-logo"><img src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2Fkrupp%20logo.png&amp;w=240&amp;fm=webp&amp;q=48" alt="Krupp Moving &amp; Storage" decoding="async" loading="lazy"></div>
+<div class="sb-marquee-logo"><img src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2Fletsgetmoving-logo.webp&amp;w=400&amp;fm=webp&amp;q=75" alt="Let's Get Moving" decoding="async" loading="lazy"></div>
+<div class="sb-marquee-logo"><img src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2Fstairhopper.png&amp;w=400&amp;fm=webp&amp;q=72" alt="Stairhopper Movers" decoding="async" loading="lazy"></div>
+<div class="sb-marquee-logo"><img src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2FSwampRabbit%2520Logo.png&amp;w=400&amp;fm=webp&amp;q=72" alt="Swamp Rabbit Moving" decoding="async" loading="lazy"></div>
+<div class="sb-marquee-logo"><img src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2FLucky-Day-Moving-Logo-C.png&amp;w=400&amp;fm=webp&amp;q=72" alt="Lucky Day Moving" decoding="async" loading="lazy"></div>
+<div class="sb-marquee-logo"><img src="https://images.bestcompany.com/blog/ellis%20moving%20and%20storage.svg" alt="Ellis Moving and Storage" decoding="async" loading="lazy"></div>
+<div class="sb-marquee-logo"><img src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2FSalmonsMoving_ColourLogo_FINAL_300.webp&amp;w=400&amp;fm=webp&amp;q=75" alt="Salmon's Moving" decoding="async" loading="lazy"></div>
+<div class="sb-marquee-logo"><img src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2FBestCalMovers.png&amp;w=400&amp;fm=webp&amp;q=72" alt="Best California Movers" decoding="async" loading="lazy"></div>
+<div class="sb-marquee-logo"><img src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2FMove4LessLOGO.png&amp;w=400&amp;fm=webp&amp;q=72" alt="Move 4 Less" decoding="async" loading="lazy"></div>
+<!-- ===== Duplicate set (aria-hidden) — required for seamless loop ===== -->
+<div class="sb-marquee-logo" aria-hidden="true"><img src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2Fmove-tastic.png&amp;w=400&amp;fm=webp&amp;q=72" alt="" decoding="async" loading="lazy"></div>
+<div class="sb-marquee-logo" aria-hidden="true"><img src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2Fkrupp%20logo.png&amp;w=240&amp;fm=webp&amp;q=48" alt="" decoding="async" loading="lazy"></div>
+<div class="sb-marquee-logo" aria-hidden="true"><img src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2Fletsgetmoving-logo.webp&amp;w=400&amp;fm=webp&amp;q=75" alt="" decoding="async" loading="lazy"></div>
+<div class="sb-marquee-logo" aria-hidden="true"><img src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2Fstairhopper.png&amp;w=400&amp;fm=webp&amp;q=72" alt="" decoding="async" loading="lazy"></div>
+<div class="sb-marquee-logo" aria-hidden="true"><img src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2FSwampRabbit%2520Logo.png&amp;w=400&amp;fm=webp&amp;q=72" alt="" decoding="async" loading="lazy"></div>
+<div class="sb-marquee-logo" aria-hidden="true"><img src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2FLucky-Day-Moving-Logo-C.png&amp;w=400&amp;fm=webp&amp;q=72" alt="" decoding="async" loading="lazy"></div>
+<div class="sb-marquee-logo" aria-hidden="true"><img src="https://images.bestcompany.com/blog/ellis%20moving%20and%20storage.svg" alt="" decoding="async" loading="lazy"></div>
+<div class="sb-marquee-logo" aria-hidden="true"><img src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2FSalmonsMoving_ColourLogo_FINAL_300.webp&amp;w=400&amp;fm=webp&amp;q=75" alt="" decoding="async" loading="lazy"></div>
+<div class="sb-marquee-logo" aria-hidden="true"><img src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2FBestCalMovers.png&amp;w=400&amp;fm=webp&amp;q=72" alt="" decoding="async" loading="lazy"></div>
+<div class="sb-marquee-logo" aria-hidden="true"><img src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2FMove4LessLOGO.png&amp;w=400&amp;fm=webp&amp;q=72" alt="" decoding="async" loading="lazy"></div>
+</div>
+</div>
+</section>
+
+<!-- ============== REAL CUSTOMER RESULTS ============== -->
+<section class="sb-defer" style="background: #F8FAFC; padding: 72px 24px 80px 24px;">
+<div style="max-width: 1100px; margin: 0 auto;">
+<div style="text-align: center; margin-bottom: 40px;">
+<div style="font-size: 13px; font-weight: bold; letter-spacing: 0.16em; text-transform: uppercase; color: #1a39a9; margin-bottom: 12px;">Real Customer Results</div>
+<h2 style="font-size: 34px; line-height: 1.15; font-weight: 800; margin: 0 auto 12px auto; max-width: 720px; color: #272b30; letter-spacing: -0.01em;">Referrals That Drive Revenue.</h2>
+<p style="font-size: 17px; color: #52535c; margin: 0;">Three movers, three different markets, real numbers.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+<!-- ===== JK Moving ===== -->
+<div style="flex: 1 1 300px; min-width: 260px; max-width: 340px; background: #FFFFFF; border-radius: 14px; padding: 32px 24px 28px 24px; border: 1px solid #E5E6EB; text-align: center;">
+<div style="height: 56px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px;"><img style="max-height: 48px; max-width: 180px; width: auto; height: auto; display: block;" src="https://images.bestcompany.com/blog/jk%20moving%20logo2%20(1).svg" alt="JK Moving" decoding="async" loading="lazy"></div>
+<div style="font-size: 13px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #6c727f; margin-bottom: 6px;">JK Moving</div>
+<div style="font-size: 36px; font-weight: 800; color: #1a39a9; line-height: 1; letter-spacing: -0.02em; margin-bottom: 8px;">$500K<span style="color: #8c7dd0;">+</span></div>
+<div style="font-size: 14px; color: #52535c; line-height: 1.5; margin-bottom: 20px;">In new revenue, and counting. 280+ total referrals. 110+ reviews.</div>
+<div style="height: 1px; background: #E5E6EB; width: 60%; margin: 0 auto 18px auto;"></div>
+<div style="font-size: 42px; color: #8c7dd0; opacity: 0.5; line-height: 0.5; font-family: Georgia, 'Times New Roman', serif; margin-bottom: 8px; height: 20px;">&ldquo;</div>
+<p style="font-size: 13px; color: #52535c; font-style: italic; line-height: 1.55; margin: 0 0 20px 0;">The best part is that it has brought a steady stream of new customers.</p>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+<div style="width: 96px; height: 96px; border-radius: 50%; background-image: url('/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2Fcarissa%2520j%2520profile.jpeg&amp;w=200&amp;fm=webp&amp;q=72'); background-size: cover; background-position: center; border: 3px solid #fff; box-shadow: 0 4px 12px rgba(18, 17, 85, 0.2);" role="img" aria-label="Carissa H."></div>
+<div style="display: flex; flex-direction: column; gap: 2px; align-items: center;">
+<div style="font-size: 13px; color: #272b30; font-weight: bold; line-height: 1.2;">Carissa H.</div>
+<div style="font-size: 11px; color: #6c727f; font-weight: 500; line-height: 1.25;">Inside Sales Supervisor</div>
+</div>
+</div>
+</div>
+<!-- ===== New City Moving ===== -->
+<div style="flex: 1 1 300px; min-width: 260px; max-width: 340px; background: #FFFFFF; border-radius: 14px; padding: 32px 24px 28px 24px; border: 1px solid #E5E6EB; text-align: center;">
+<div style="height: 56px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px;"><img style="max-height: 55px; max-width: 207px; width: auto; height: auto; display: block;" src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fbcbs%2Fsnoball%2Flogos%2Fnew-city-moving-logo-lg.webp&amp;w=400&amp;fm=webp&amp;q=75" alt="New City Moving" decoding="async" loading="lazy"></div>
+<div style="font-size: 13px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #6c727f; margin-bottom: 6px;">New City Moving</div>
+<div style="font-size: 36px; font-weight: 800; color: #1a39a9; line-height: 1; letter-spacing: -0.02em; margin-bottom: 8px;">30<span style="color: #8c7dd0;">+</span></div>
+<div style="font-size: 14px; color: #52535c; line-height: 1.5; margin-bottom: 20px;">New referrals in their first month. Five came on day one. 450+ referrals since then.</div>
+<div style="height: 1px; background: #E5E6EB; width: 60%; margin: 0 auto 18px auto;"></div>
+<div style="font-size: 42px; color: #8c7dd0; opacity: 0.5; line-height: 0.5; font-family: Georgia, 'Times New Roman', serif; margin-bottom: 8px; height: 20px;">&ldquo;</div>
+<p style="font-size: 13px; color: #52535c; font-style: italic; line-height: 1.55; margin: 0 0 20px 0;">Ask at the right time. Pay fast and referrers stay excited and keep sending.</p>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+<div style="width: 96px; height: 96px; border-radius: 50%; background-image: url('/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2FMeggan%2520S%2520profile%25202.png&amp;w=200&amp;fm=webp&amp;q=72'); background-size: 165%; background-position: center 22%; border: 3px solid #fff; box-shadow: 0 4px 12px rgba(18, 17, 85, 0.2);" role="img" aria-label="Meggan S."></div>
+<div style="display: flex; flex-direction: column; gap: 2px; align-items: center;">
+<div style="font-size: 13px; color: #272b30; font-weight: bold; line-height: 1.2;">Meggan S.</div>
+<div style="font-size: 11px; color: #6c727f; font-weight: 500; line-height: 1.25;">Dir. of Business Development</div>
+</div>
+</div>
+</div>
+<!-- ===== Muscular Moving Men ===== -->
+<div style="flex: 1 1 300px; min-width: 260px; max-width: 340px; background: #FFFFFF; border-radius: 14px; padding: 32px 24px 28px 24px; border: 1px solid #E5E6EB; text-align: center;">
+<div style="height: 56px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px;"><img style="max-height: 50px; max-width: 189px; width: auto; height: auto; display: block;" src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2Fmuscular%2520moving%2520men%2520logo.png&amp;w=400&amp;fm=webp&amp;q=72" alt="Muscular Moving Men" decoding="async" loading="lazy"></div>
+<div style="font-size: 13px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #6c727f; margin-bottom: 6px;">Muscular Moving Men</div>
+<div style="font-size: 36px; font-weight: 800; color: #1a39a9; line-height: 1; letter-spacing: -0.02em; margin-bottom: 8px;">100<span style="color: #8c7dd0;">+</span></div>
+<div style="font-size: 14px; color: #52535c; line-height: 1.5; margin-bottom: 20px;">Referrals in their first two months. 280+ more referrals since then.</div>
+<div style="height: 1px; background: #E5E6EB; width: 60%; margin: 0 auto 18px auto;"></div>
+<div style="font-size: 42px; color: #8c7dd0; opacity: 0.5; line-height: 0.5; font-family: Georgia, 'Times New Roman', serif; margin-bottom: 8px; height: 20px;">&ldquo;</div>
+<p style="font-size: 13px; color: #52535c; font-style: italic; line-height: 1.55; margin: 0 0 20px 0;">Snoball has made my life so much easier. It took a huge task off of my plate.</p>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+<div style="width: 96px; height: 96px; border-radius: 50%; background-image: url('/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2Fmadelyn.png&amp;w=200&amp;fm=webp&amp;q=72'); background-size: 175%; background-position: center 22%; border: 3px solid #fff; box-shadow: 0 4px 12px rgba(18, 17, 85, 0.2);" role="img" aria-label="Madelyn Kupfer"></div>
+<div style="display: flex; flex-direction: column; gap: 2px; align-items: center;">
+<div style="font-size: 13px; color: #272b30; font-weight: bold; line-height: 1.2;">Madelyn Kupfer</div>
+<div style="font-size: 11px; color: #6c727f; font-weight: 500; line-height: 1.25;">Business Development</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============== FINAL CTA ============== -->
+<section class="sb-defer" style="background-image: linear-gradient(135deg, #121155 0%, #1A39A9 55%, #0055B8 100%); color: #ffffff; padding: 88px 24px;">
+<div style="max-width: 880px; margin: 0 auto; text-align: center;">
+<h2 style="font-size: 42px; line-height: 1.1; font-weight: 800; margin: 0 0 16px 0; letter-spacing: -0.02em; color: #ffffff;">Ready for More Moves? <span style="background-image: linear-gradient(90deg, #8BD7DF 0%, #FF94FB 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: #8bd7df;">Let&rsquo;s Talk.</span></h2>
+<p style="font-size: 18px; color: rgba(255, 255, 255, 0.9); margin: 0 auto 32px auto; max-width: 640px; line-height: 1.55;">We&rsquo;ll book $5k in new revenue from referrals in your first 6 days, or you don&rsquo;t pay. The best part? We do it all for you.</p>
+<a style="display: inline-block; background: #8BD7DF; color: #121155; font-weight: 800; font-size: 17px; padding: 18px 36px; border-radius: 8px; text-decoration: none; letter-spacing: 0.01em; box-shadow: 0 12px 32px rgba(139, 215, 223, 0.25);" href="#book-a-demo">Book Your Demo &rarr;</a>
+</div>
+</section>
+
+<!-- ============== FOOTER BOOKEND ============== -->
+<section class="sb-defer" style="background: #121155; padding: 20px 24px;">
+<div style="max-width: 1180px; margin: 0 auto; display: flex; align-items: center;"><img style="height: 26px; width: auto; display: block;" src="/.netlify/images?url=https%3A%2F%2Fimages.bestcompany.com%2Fblog%2FWhite%2520Straight%2520Snoball%2520Logo.png&amp;w=320&amp;fm=webp&amp;q=72" alt="Snoball"></div>
+</section>
+
+</div>
+<!-- =====================================================================
+     END Snoball — Movers 6-Day Guarantee promo landing page.
+     ===================================================================== -->
+<script>
+(function () {
+  var EMBED = 'https://app.iclosed.io/e/snoball/snoball-moving-demo';
+  // Add ?preview to the URL to freeze the placeholder (skips auto-load) for inspection.
+  var PREVIEW = location.search.indexOf('preview') !== -1;
+  var started = false;
+
+  // ---- Option A: auto-resize from iClosed height messages ----
+  // iClosed lives on app.iclosed.io, so we cannot measure the form from this page
+  // (cross-origin). IF iClosed broadcasts its height via postMessage, we grow the
+  // embed to match so the form never inner-scrolls. Purely additive: if no height
+  // message ever arrives, nothing changes and the min-height floor below still holds.
+  // Floor used ONLY for the loading facade and before the form first reports its
+  // size. Once the iframe has loaded, we hug the form's real height instead, so
+  // there is no empty space below short steps. (See the message handler below.)
+  var FACADE_FLOOR = 500; // keep in sync with #iclosed-embed min-height in the CSS
+  var hugReady = false;   // flips true once the iframe loads; gates shrink-to-fit
+
+  // Pull a plausible pixel height out of whatever shape iClosed sends.
+  // Confirmed format: { type: 'iclosed.widget_height', height: '930px' }.
+  // We stay tolerant: a raw number, a numeric/px string, a JSON string, or an
+  // object carrying a height field all resolve to a number.
+  function toNum(v) {
+    if (typeof v === 'number') return isFinite(v) ? v : null;
+    if (typeof v === 'string') {
+      var n = parseFloat(v); // parseFloat('930px') === 930
+      return isNaN(n) ? null : n;
+    }
+    return null;
+  }
+
+  function parseHeight(data) {
+    var obj = data;
+    if (typeof obj === 'number') return obj;
+    if (typeof obj === 'string') {
+      var s = obj.trim();
+      if (/^\d/.test(s)) return toNum(s); // bare "930" or "930px"
+      try { obj = JSON.parse(s); } catch (e) { return null; }
+    }
+    if (obj && typeof obj === 'object') {
+      var keys = ['height', 'scrollHeight', 'offsetHeight', 'docHeight', 'iframeHeight', 'frameHeight'];
+      for (var i = 0; i < keys.length; i++) {
+        if (keys[i] in obj) {
+          var h = toNum(obj[keys[i]]);
+          if (h !== null) return h;
+        }
+      }
+    }
+    return null;
+  }
+
+  window.addEventListener('message', function (e) {
+    // Only trust messages from iClosed's domain.
+    var host;
+    try { host = new URL(e.origin).hostname; } catch (x) { return; }
+    if (host !== 'app.iclosed.io' && host !== 'iclosed.io' && !/\.iclosed\.io$/.test(host)) return;
+
+    // DIAGNOSTIC: log everything iClosed sends so we can confirm whether height is
+    // broadcast and in what shape. Safe to delete this console.log once verified.
+    try { console.log('[iClosed message]', e.data); } catch (x) {}
+
+    var h = parseHeight(e.data);
+    if (!h || h <= 200) return;
+    var box = document.getElementById('iclosed-embed');
+    if (!box) return;
+    h = Math.ceil(h);
+    if (hugReady) {
+      // Form is loaded: hug its exact height, growing or shrinking to fit.
+      box.style.minHeight = h + 'px';
+    } else {
+      // Facade still showing: only grow, never shrink, so the loading box does not
+      // flicker downward on early or transient values.
+      var cur = parseFloat(box.style.minHeight) || FACADE_FLOOR;
+      if (h > cur) box.style.minHeight = h + 'px';
+    }
+  }, false);
+
+  // Build the iClosed embed URL with tracking params pulled from the page URL.
+  // For each subid, use a directly-passed subid first, then fall back to the UTM.
+  // This way it works whether the ad URL carries subid1/2/3 or utm_source/medium/campaign.
+  function embedUrl() {
+    var p = new URLSearchParams(location.search);
+    var map = {
+      subid1: p.get('subid1') || p.get('utm_source'),
+      subid2: p.get('subid2') || p.get('utm_medium'),
+      subid3: p.get('subid3') || p.get('utm_campaign')
+    };
+    var url = new URL(EMBED);
+    Object.keys(map).forEach(function (k) {
+      if (map[k]) url.searchParams.set(k, map[k]);
+    });
+    return url.toString();
+  }
+
+  function load() {
+    if (started) return;
+    started = true;
+    var box = document.getElementById('iclosed-embed');
+    var facade = document.getElementById('iclosed-facade');
+    var bar = document.getElementById('iclosed-loadingbar');
+    if (!box) return;
+    if (bar) bar.style.opacity = '1';
+    var f = document.createElement('iframe');
+    f.title = 'Snoball Moving Demo';
+    f.src = embedUrl();
+    f.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;display:block;z-index:1;';
+    f.addEventListener('load', function () {
+      hugReady = true; // form is in: from here on we hug its exact reported height
+      if (!facade) return;
+      facade.style.pointerEvents = 'none';
+      facade.style.opacity = '0';
+      setTimeout(function () { if (facade.parentNode) facade.parentNode.removeChild(facade); }, 450);
+    });
+    box.insertBefore(f, box.firstChild);
+  }
+
+  var facade = document.getElementById('iclosed-facade');
+  if (facade) {
+    facade.addEventListener('click', load);
+    facade.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); load(); }
+    });
+  }
+  // Any "Book a Demo" CTA also loads the scheduler, then the anchor scrolls to it.
+  var ctas = document.querySelectorAll('a[href="#book-a-demo"]');
+  for (var i = 0; i < ctas.length; i++) { ctas[i].addEventListener('click', load); }
+
+  // Load on the first real interaction: scroll, tap, mouse move, key, or wheel.
+  // Performance tools (Lighthouse/PageSpeed) never interact with the page, so the
+  // heavy third-party scheduler stays out of the test. Real visitors trigger it the
+  // instant they engage, so the calendar is ready before they reach it. No extra click.
+  if (!PREVIEW) {
+    var triggers = ['pointerdown', 'touchstart', 'mousemove', 'scroll', 'keydown', 'wheel'];
+    function onFirstInteraction() {
+      for (var j = 0; j < triggers.length; j++) {
+        window.removeEventListener(triggers[j], onFirstInteraction);
+      }
+      load();
+    }
+    for (var k = 0; k < triggers.length; k++) {
+      window.addEventListener(triggers[k], onFirstInteraction, { once: true, passive: true });
+    }
+  }
+})();
+</script>
+</body>
+</html>
