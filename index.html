@@ -8,46 +8,28 @@
   <link rel="preconnect" href="https://images.bestcompany.com">
   <link rel="preconnect" href="https://s3.us-west-1.amazonaws.com">
   <link rel="preconnect" href="https://app.iclosed.io">
-  <!-- Self-hosted Lato (brand font). Files live in /fonts next to index.html. -->
-  <link rel="preload" as="font" type="font/woff2" href="fonts/Lato-Black.woff2" crossorigin>
-  <link rel="preload" as="font" type="font/woff2" href="fonts/Lato-Regular.woff2" crossorigin>
+  <!-- Self-hosted Inter (variable). Files live in /fonts next to index.html. -->
+  <link rel="preload" as="font" type="font/woff2" href="fonts/InterVariable.woff2" crossorigin>
   <style>
 /* ====================================================================
    Snoball Movers — 6-Day Guarantee Promo Landing Page — Custom Styles
    ==================================================================== */
 
-/* Self-hosted Lato (brand font). No Google Fonts, so it stays off the render path.
-   Files in /fonts (case-sensitive): Lato-Regular.woff2, Lato-Bold.woff2,
-   Lato-Black.woff2, Lato-Italic.woff2. Lato only ships 400 / 700 / 900, so the
-   weight ranges below remap the page's existing weights to the nearest real Lato cut:
-   100-500 -> Regular, 600-700 -> Bold, 800-900 -> Black. */
+/* Self-hosted Inter variable font. No Google Fonts (keeps it off the render path).
+   Files in /fonts (case-sensitive): InterVariable.woff2 and InterVariable-Italic.woff2. */
 @font-face {
-  font-family: 'Lato';
+  font-family: 'Inter';
   font-style: normal;
-  font-weight: 100 500;
+  font-weight: 100 900;
   font-display: swap;
-  src: url('fonts/Lato-Regular.woff2') format('woff2');
+  src: url('fonts/InterVariable.woff2') format('woff2');
 }
 @font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 600 700;
-  font-display: swap;
-  src: url('fonts/Lato-Bold.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 800 900;
-  font-display: swap;
-  src: url('fonts/Lato-Black.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Lato';
+  font-family: 'Inter';
   font-style: italic;
   font-weight: 100 900;
   font-display: swap;
-  src: url('fonts/Lato-Italic.woff2') format('woff2');
+  src: url('fonts/InterVariable-Italic.woff2') format('woff2');
 }
 
 html, body {
@@ -202,7 +184,7 @@ html, body {
 <!-- =====================================================================
      Snoball — Movers 6-Day Guarantee promo landing page
      ===================================================================== -->
-<div class="snoball-mc-landing" style="font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #272b30; line-height: 1.55; -webkit-font-smoothing: antialiased; width: 100%; margin: 0; padding: 0;">
+<div class="snoball-mc-landing" style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #272b30; line-height: 1.55; -webkit-font-smoothing: antialiased; width: 100%; margin: 0; padding: 0;">
 
 <!-- ============== STICKY TOP BAR (frosted glass) ============== -->
 <div style="background: rgba(18, 17, 85, 0.92); color: #ffffff; padding: 13px 24px; position: sticky; top: 0; z-index: 50; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
@@ -218,7 +200,7 @@ html, body {
 <!-- Eyebrow / guarantee tag -->
 <div style="display: inline-block; font-size: 13px; font-weight: bold; letter-spacing: 0.16em; text-transform: uppercase; color: #8bd7df; background: rgba(139, 215, 223, 0.1); border: 1px solid rgba(139, 215, 223, 0.3); padding: 7px 16px; border-radius: 999px; margin-bottom: 22px;">Risk-Free Guarantee for Movers</div>
 <!-- H1 -->
-<h1 style="font-size: 68px; line-height: 1.04; font-weight: 800; margin: 0 0 20px 0; letter-spacing: -0.03em; color: #ffffff;">Get $5k in referral revenue in 6 days or <span style="background-image: linear-gradient(90deg, #8BD7DF 0%, #FF94FB 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: #8bd7df;">pay nothing</span></h1>
+<h1 style="font-size: 68px; line-height: 1.04; font-weight: 800; margin: 0 0 20px 0; letter-spacing: -0.03em; color: #ffffff;">$5k in referral revenue in 6 days or <span style="background-image: linear-gradient(90deg, #8BD7DF 0%, #FF94FB 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: #8bd7df;">pay nothing</span></h1>
 <!-- Subtext (special offer + qualifiers) -->
 <p style="font-size: 18px; line-height: 1.6; color: rgba(255, 255, 255, 0.92); margin: 0 auto 28px auto; max-width: 600px;">If you&rsquo;re doing 50+ moves a month with 1,000+ customers in your CRM, you qualify for our guarantee. Book a demo and we&rsquo;ll prove it.</p>
 <!-- G2 social proof badge (~20% smaller), just below the subtext -->
