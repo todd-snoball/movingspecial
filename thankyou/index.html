@@ -6,6 +6,37 @@
   <title>Thanks | Your Snoball Demo Is Booked</title>
   <meta name="description" content="Your Snoball demo is confirmed. Accept the calendar invite in your inbox and watch a quick prep video before we talk.">
   <meta name="robots" content="noindex, nofollow">
+  <!-- Hyros Universal Tracking Script -->
+  <script>
+  var head = document.head;
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = "https://p.snoball.com/v1/lst/universal-script?ph=d307417c5064b05793e668717db3cc7c07d80c4d83af7d1b6d09224574618cbd&tag=!clicked&ref_url=" + encodeURI(document.URL) ;
+  head.appendChild(script);
+  </script>
+  <!-- End Hyros Universal Tracking Script -->
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1911164982996788');
+  fbq('track', 'PageView');
+  // Booking-confirmation conversion. Your "Schedule" event currently runs through
+  // the Conversions API (likely fired server-side by iClosed on booking). Firing it
+  // again here would double-count it, so it is left off by default. If iClosed is
+  // NOT already sending Schedule on booking, uncomment the next line to fire it here:
+  // fbq('track', 'Schedule');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1911164982996788&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
   <link rel="preconnect" href="https://images.bestcompany.com">
   <link rel="preconnect" href="https://app.iclosed.io">
   <link rel="preconnect" href="https://i.ytimg.com">
