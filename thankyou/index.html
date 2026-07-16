@@ -27,11 +27,11 @@
   'https://connect.facebook.net/en_US/fbevents.js');
   fbq('init', '1911164982996788');
   fbq('track', 'PageView');
-  // Booking-confirmation conversion. Your "Schedule" event currently runs through
-  // the Conversions API (likely fired server-side by iClosed on booking). Firing it
-  // again here would double-count it, so it is left off by default. If iClosed is
-  // NOT already sending Schedule on booking, uncomment the next line to fire it here:
-  // fbq('track', 'Schedule');
+  // Booking-confirmation conversion. This page is reached only after a booking, so
+  // Schedule fires on load as the conversion signal. NOTE: if you later turn on an
+  // iClosed / Conversions API Schedule event fired on booking, disable this line (or
+  // add a shared eventID to both) to avoid double-counting.
+  fbq('track', 'Schedule');
   </script>
   <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=1911164982996788&ev=PageView&noscript=1"
